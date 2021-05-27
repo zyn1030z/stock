@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+
+access_sale_request,sale.request,model_sale_request,,1,1,1,1
+access_sale_request_line,sale.request.line,model_sale_request_line,,1,1,1,1
+access_import_excel,import_excel,model_import_xls_wizard_stock,,1,1,1,1
+access_warehouse_supply,warehouse_supply,model_warehouse_supply,,1,1,1,1
+access_report_sale_request_report,report_sale_request_report,model_report_sale_request_report,,1,1,1,1
+access_general_request,general_request,model_general_request,,1,1,1,1
+access_general_request_line,general_request_line,model_general_request_line,,1,1,1,1

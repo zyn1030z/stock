@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_request_tree" model="ir.ui.view">
+            <field name="name">sale.request.tree</field>
+            <field name="model">sale.request</field>
+            <field name="arch" type="xml">
+                <tree string="Yêu cầu hàng bán">
+                    <field name="name"/>
+                    <field name="warehouse_id"/>
+                    <field name="date_request"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sale_request_kanban">
+            <field name="name">sale.request.kanban</field>
+            <field name="model">sale.request</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title"><span>
+                                            <field name="name"/>
+                                        </span></strong>
+                                    </div>
+                                    <strong><field name="warehouse_id"/></strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span>
+                                            <field name="name"/>
+                                        </span>
+                                        <span>
+                                            <field name="warehouse_id"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="state" widget="label_selection"
+                                               options="{'classes': {'draft': 'default', 'sent': 'default', 'processed': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="sale_request_form" model="ir.ui.view">
+            <field name="name">sale.request.form</field>
+            <field name="model">sale.request</field>
+            <field name="arch" type="xml">
+                <form string="Yêu cầu hàng bán">
+                    <header>
+                        <button name="send_sale_request" type="object" states="draft"
+                                string="Gửi yêu cầu" class="oe_highlight"/>
+                        <button name="return_sale_request" type="object" states="sent"
+                                string="Quay lại" class="oe_highlight"/>
+                        <button name="accept_sale_request" type="object" states="sent"
+                                string="Xác nhận yêu cầu" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,sent,processed"
+                               clickable="False"/>
+                    </header>
+                    <sheet>
+                        <div>
+                            <h1>
+                                <field name="name" class="oe_inline">
+                                </field>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="warehouse_id"/>
+                                <field name="warehouse_process"/>
+                            </group>
+                            <group>
+                                <field name="date_request"/>
+                                <field name="purchase_process"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết">
+                                <div class="oe_edit_only">
+                                    <button name='open_import_stock' type='object' string="Tải lên tệp tin của bạn"
+                                            class="oe_highlight" states="draft"/>
+                                    <button name='get_contract_template' type="object" string="Tải file mẫu"
+                                            icon="fa-download" class="oe-highlight"
+                                            states="draft"/>
+                                </div>
+                                <field name="sale_request_line" widget="section_and_note_one2many"
+                                       mode="tree,kanban">
+                                    <tree editable="bottom">
+                                        <field name="request_id"/>
+                                        <field name="product_id"/>
+                                        <field name="qty" style="text-align:center;"/>
+                                        <field name="qty_apply" style="text-align:center;"/>
+                                        <field name="product_uom" style="text-align:center;"/>
+                                        <field name="supply_type"/>
+                                        <!--                                        <field name="supply_type" domain="[('type', '=', 'supply_type')]"/>-->
+                                        <!--                                        <field name="delivered_qty" style="text-align:center;"-->
+                                        <!--                                               attrs="{'column_invisible': [('parent.state', 'not in', ['approved','complete'])]}"/>-->
+                                        <!--                                        attrs="{'invisible':[('state', '=', 'draft')]}"-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_request_act" model="ir.actions.act_window">
+            <field name="name">Yêu cầu hàng bán</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.request</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+<!--        <menuitem id="stock_custom_menu" name="Menu Kho"-->
+<!--                  sequence="0"/>-->
+        <menuitem id="sale_request_menu" name="Yêu cầu hàng bán"
+                  parent="stock.menu_stock_root"
+                  action="sale_request_act" sequence="37"/>
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <report
+                id="sale_request_report_xlsx"
+                model="sale.request"
+                string="Phiếu yêu cầu cung ứng hàng hóa"
+                report_type="xlsx"
+                name="sale.request.report"
+                file="sale.request.report"
+                print_report_name="Sale Request Excel Report"
+        />
+    </data>
+</odoo>

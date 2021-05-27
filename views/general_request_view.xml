@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="general_request_tree" model="ir.ui.view">
+            <field name="name">general.request.tree</field>
+            <field name="model">general.request</field>
+            <field name="arch" type="xml">
+                <tree string="Tổng hợp yêu cầu ">
+                    <field name="warehouse_id"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="general_request_form" model="ir.ui.view">
+            <field name="name">general.request.form</field>
+            <field name="model">general.request</field>
+            <field name="arch" type="xml">
+                <form string="Yêu cầu hàng bán">
+                    <header>
+                        <button states="draft"
+                                string="Tổng hợp yêu cầu" class="oe_highlight"/>
+                        <button states="sent"
+                                string="Quay lại" class="oe_highlight"/>
+                        <button states="sent"
+                                string="Xác nhận yêu cầu" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,sent,done, cancel"
+                               clickable="True"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="warehouse_id"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết">
+                                <field name="general_request_line" widget="section_and_note_one2many"
+                                       mode="tree">
+                                    <tree editable="bottom">
+                                        <field name="request_line_id"/>
+                                        <field name="product_id"/>
+                                        <field name="qty" style="text-align:center;"/>
+                                        <field name="qty_apply" style="text-align:center;"/>
+                                        <field name="product_uom" style="text-align:center;"/>
+                                        <field name="warehoue_des_id"/>
+                                        <field name="stock_transfer_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="general_request_act" model="ir.actions.act_window">
+            <field name="name">Tổng hợp yêu cầu</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">general.request</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+<!--        <menuitem id="stock_custom_menu" name="Chức năng kho"-->
+<!--                   parent="stock.menu_stock_root"/>-->
+        <menuitem id="sale_request_menu" name="Tổng hợp yêu cầu"
+                  parent="stock.menu_stock_root"
+                  action="general_request_act" sequence="2"/>
+    </data>
+</odoo>
